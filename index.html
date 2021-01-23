@@ -6,10 +6,13 @@
     <title>画板</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body>  
+    <!-- // 用js的方式
+    -鼠标点击画点 canvas.onclick = (e) =>{}
+    -鼠标移动画点 canvas.onmousemove= (e)=>{}
     <div id="canvas"></div>
     <script>
-        canvas.onclick = (e) => {
+        canvas.onmousemove = (e) => {
             console.log(e.clientX);
             console.log(e.clientY);
             let div = document.createElement('div');
@@ -25,6 +28,46 @@
             div.style.backgroundColor = 'black';
             canvas.appendChild(div)
         }
+    </script> -->
+    <!-- 用canvas的方式 -->
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById("canvas");
+        canvas.width = document.documentElement.clientWidth //获取可视窗口的宽高设置为canvas的宽高
+        canvas.height = document.documentElement.clientHeight
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "black";  // 背景颜色
+        ctx.strokeStyle = "none"; // 无边框
+        // ctx.fillRect(20, 20, 66, 80); // 起始位置与宽高
+        // canvas.onclick = (e) =>{  // 画点
+        //     ctx.fillRect(e.clientX-3, e.clientY-3, 6, 6)
+        // }
+        // canvas.onmousemove = (e) =>{   // 画线
+        //     ctx.fillRect(e.clientX-3, e.clientY-3, 6, 6)
+        // }
+
+        // 可画可停
+        let painting = false;
+        canvas.onmousedown = () => {  // 鼠标按下的时候可画
+            painting = true;
+        }
+        canvas.onmousemove = (e) => {
+            if(painting === true) {
+                // ctx.fillRect(e.clientX-3, e.clientY-3, 6, 6);
+                // 圆形的画法
+                ctx.beginPath();
+                ctx.arc(e.clientX, e.clientY, 6, 0, 2*Math.PI); // 圆心位置，半径，圆
+                ctx.stroke();
+                ctx.fill();
+            }else {
+
+            }
+        }
+        canvas.onmouseup = ()=> { // 鼠标抬起时停止
+            painting = false;
+        }
+
+
     </script>
 </body>
 </html>
