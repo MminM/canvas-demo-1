@@ -38,6 +38,8 @@
         var ctx = canvas.getContext("2d");
         ctx.fillStyle = "black";  // 背景颜色
         ctx.strokeStyle = "none"; // 无边框
+        ctx.lineWidth = 4;  // 线条的宽度
+        ctx.lineCap = "round"; // 可以将线条结尾处变为圆，线条更加顺滑
         // ctx.fillRect(20, 20, 66, 80); // 起始位置与宽高
         // canvas.onclick = (e) =>{  // 画点
         //     ctx.fillRect(e.clientX-3, e.clientY-3, 6, 6)
@@ -48,26 +50,86 @@
 
         // 可画可停
         let painting = false;
-        canvas.onmousedown = () => {  // 鼠标按下的时候可画
+        // canvas.onmousedown = () => {  // 鼠标按下的时候可画
+        //     painting = true;
+        // }
+        // canvas.onmousemove = (e) => {
+        //     if(painting === true) {
+        //         // ctx.fillRect(e.clientX-3, e.clientY-3, 6, 6);
+        //         // 圆形的画法
+        //         ctx.beginPath();
+        //         ctx.arc(e.clientX, e.clientY, 6, 0, 2*Math.PI); // 圆心位置，半径，圆
+        //         ctx.stroke();
+        //         ctx.fill();
+        //     }else {
+
+        //     }
+        // }
+        // canvas.onmouseup = ()=> { // 鼠标抬起时停止
+        //     painting = false;
+        // }
+
+        // 适配手机端
+        // var isTouchDevice = 'ontouchstart' in document.documentElement;
+        // if(isTouchDevice) {
+        //     canvas.ontouchmove = (e) =>{
+        //         let x = e.touches[0].clientX;
+        //         let y = e.touches[0].clientY;
+        //         ctx.beginPath();
+        //         ctx.arc(x,y,6,0,2*Math.PI);
+        //         ctx.stroke();
+        //         ctx.fill();
+        //     }
+        // }else {
+        //     canvas.onmousedown = () => {  // 鼠标按下的时候可画
+        //         painting = true;
+        //     }
+        //     canvas.onmousemove = (e) => {
+        //         if(painting === true) {
+        //             // ctx.fillRect(e.clientX-3, e.clientY-3, 6, 6);
+        //             // 圆形的画法
+        //             ctx.beginPath();
+        //             ctx.arc(e.clientX, e.clientY, 6, 0, 2*Math.PI); // 圆心位置，半径，圆
+        //             ctx.stroke();
+        //             ctx.fill();
+        //         }else {
+
+        //         }
+        //     }
+        //     canvas.onmouseup = ()=> { // 鼠标抬起时停止
+        //         painting = false;
+        //     } 
+        // }
+
+        // 画线
+        // ctx.beginPath(); // 开始路径
+        // ctx.moveTo(0, 0); // 端点的位置
+        // ctx.lineTo(500, 500); // 朝着某个点画一条线
+        // ctx.lineTo(0, 500); // 朝着某个点画一条线
+        // ctx.closePath(); // 关闭路径
+        // ctx.stroke();  // 描边
+        // ctx.fill(); // 填充
+
+        function drawLine(x1, y1, x2, y2){
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+        let last;
+        canvas.onmousedown = (e) => {
             painting = true;
+            last = [e.clientX, e.clientY];
         }
         canvas.onmousemove = (e) => {
             if(painting === true) {
-                // ctx.fillRect(e.clientX-3, e.clientY-3, 6, 6);
-                // 圆形的画法
-                ctx.beginPath();
-                ctx.arc(e.clientX, e.clientY, 6, 0, 2*Math.PI); // 圆心位置，半径，圆
-                ctx.stroke();
-                ctx.fill();
-            }else {
-
+                drawLine(last[0], last[1], e.clientX, e.clientY)
+                last = [e.clientX, e.clientY]
             }
         }
-        canvas.onmouseup = ()=> { // 鼠标抬起时停止
+        canvas.onmouseup = () => {
             painting = false;
         }
-
-
     </script>
 </body>
 </html>
